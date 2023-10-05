@@ -2,8 +2,15 @@ package multiInput
 
 import (
 	"fmt"
+	"ragCli/cmd/program"
 
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
+)
+
+var (
+	focusedStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#01FAC6")).Bold(true)
+	titleStyle   = lipgloss.NewStyle().Background(lipgloss.Color("#01FAC6")).Foreground(lipgloss.Color("#030303")).Bold(true).Padding(0, 1, 0)
 )
 
 type Selection struct {
@@ -20,18 +27,20 @@ type model struct {
 	selected map[int]struct{}
 	choice   *Selection
 	header   string
+	exit     *bool
 }
 
 func (m model) Init() tea.Cmd {
 	return nil
 }
 
-func InitialModelMulti(choices []string, selection *Selection, header string) model {
+func InitialModelMulti(choices []string, selection *Selection, header string, program *program.Program) model {
 	return model{
 		choices:  choices,
 		selected: make(map[int]struct{}),
 		choice:   selection,
-		header:   header,
+		header:   titleStyle.Render(header),
+		exit:     &program.Exit,
 	}
 }
 
@@ -40,7 +49,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		switch msg.String() {
 		case "ctrl+c", "q":
-			// m.exit.Value = true
+			*m.exit = true
 			return m, tea.Quit
 		case "up", "k":
 			if m.cursor > 0 {
@@ -76,19 +85,17 @@ func (m model) View() string {
 	for i, choice := range m.choices {
 		cursor := " "
 		if m.cursor == i {
-			cursor = ">"
+			cursor = focusedStyle.Render(">")
 		}
 
 		checked := " "
 		if _, ok := m.selected[i]; ok {
-			checked = "x"
+			checked = focusedStyle.Render("x")
 		}
 
 		s += fmt.Sprintf("%s [%s] %s\n", cursor, checked, choice)
 	}
 
-	s += fmt.Sprintf("\nPress %s to confirm choice.\n", "y")
-	s += fmt.Sprintf("\nPress %s to quit.\n\n", "q")
-
+	s += fmt.Sprintf("\nPress %s to confirm choice.\n", focusedStyle.Render("y"))
 	return s
 }

@@ -2,9 +2,15 @@ package textinput
 
 import (
 	"fmt"
+	"ragCli/cmd/program"
 
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
+)
+
+var (
+	titleStyle = lipgloss.NewStyle().Background(lipgloss.Color("#01FAC6")).Foreground(lipgloss.Color("#030303")).Bold(true).Padding(0, 1, 0)
 )
 
 type (
@@ -24,9 +30,10 @@ type model struct {
 	err       error
 	output    *Output
 	header    string
+	exit      *bool
 }
 
-func InitialTextInputModel(output *Output, header string) model {
+func InitialTextInputModel(output *Output, header string, program *program.Program) model {
 	ti := textinput.New()
 	ti.Focus()
 	ti.CharLimit = 156
@@ -36,7 +43,8 @@ func InitialTextInputModel(output *Output, header string) model {
 		textInput: ti,
 		err:       nil,
 		output:    output,
-		header:    header,
+		header:    titleStyle.Render(header),
+		exit:      &program.Exit,
 	}
 }
 
@@ -56,12 +64,14 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				return m, tea.Quit
 			}
 		case tea.KeyCtrlC, tea.KeyEsc:
+			*m.exit = true
 			return m, tea.Quit
 		}
 
 	// We handle errors just like any other message
 	case errMsg:
 		m.err = msg
+		*m.exit = true
 		return m, nil
 	}
 
@@ -70,9 +80,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m model) View() string {
-	return fmt.Sprintf("%s\n%s\n%s",
+	return fmt.Sprintf("%s\n\n%s\n\n",
 		m.header,
 		m.textInput.View(),
-		"press ESC to exit",
 	)
 }
