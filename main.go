@@ -3,7 +3,7 @@ Copyright © 2023 NAME HERE <EMAIL ADDRESS>
 */
 package main
 
-import "github.com/melkey/rag-cli/cmd"
+import "github.com/melkeydev/rag-cli/cmd"
 
 func main() {
 	cmd.Execute()

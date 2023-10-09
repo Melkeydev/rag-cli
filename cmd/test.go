@@ -5,11 +5,11 @@ import (
 	"os"
 	"sync"
 
-	"github.com/melkey/rag-cli/cmd/program"
-	"github.com/melkey/rag-cli/cmd/steps"
-	"github.com/melkey/rag-cli/cmd/ui/loading"
-	multiInput "github.com/melkey/rag-cli/cmd/ui/multiInput"
-	textinput "github.com/melkey/rag-cli/cmd/ui/textInput"
+	"github.com/melkeydev/rag-cli/cmd/program"
+	"github.com/melkeydev/rag-cli/cmd/steps"
+	"github.com/melkeydev/rag-cli/cmd/ui/loading"
+	multiInput "github.com/melkeydev/rag-cli/cmd/ui/multiInput"
+	textinput "github.com/melkeydev/rag-cli/cmd/ui/textInput"
 
 	"runtime"
 

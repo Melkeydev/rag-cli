@@ -3,7 +3,7 @@ package textinput
 import (
 	"fmt"
 
-	"github.com/melkey/rag-cli/cmd/program"
+	"github.com/melkeydev/rag-cli/cmd/program"
 
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
