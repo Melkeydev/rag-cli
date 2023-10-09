@@ -1,6 +1,6 @@
 package steps
 
-import textinput "ragCli/cmd/ui/textInput"
+import textinput "github.com/melkey/rag-cli/cmd/ui/textInput"
 
 type StepSchema struct {
 	StepName string

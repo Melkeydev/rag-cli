@@ -2,7 +2,8 @@ package multiInput
 
 import (
 	"fmt"
-	"ragCli/cmd/program"
+
+	"github.com/melkey/rag-cli/cmd/program"
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"

@@ -3,12 +3,13 @@ package cmd
 import (
 	"fmt"
 	"os"
-	"ragCli/cmd/program"
-	"ragCli/cmd/steps"
-	"ragCli/cmd/ui/loading"
-	multiInput "ragCli/cmd/ui/multiInput"
-	textinput "ragCli/cmd/ui/textInput"
 	"sync"
+
+	"github.com/melkey/rag-cli/cmd/program"
+	"github.com/melkey/rag-cli/cmd/steps"
+	"github.com/melkey/rag-cli/cmd/ui/loading"
+	multiInput "github.com/melkey/rag-cli/cmd/ui/multiInput"
+	textinput "github.com/melkey/rag-cli/cmd/ui/textInput"
 
 	"runtime"
 

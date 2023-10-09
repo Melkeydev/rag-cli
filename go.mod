@@ -1,4 +1,4 @@
-module ragCli
+module github.com/melkey/rag-cli
 
 go 1.20
 
