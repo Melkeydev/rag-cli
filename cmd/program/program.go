@@ -30,9 +30,9 @@ const bye = `⠀⠀⠀⢀⡴⠟⠛⢷⡄⠀⣠⠞⠋⠉⠳⡄⠀⠀⠀⠀
 ⠀⠀⠀⠀⠛⠃⠰⠿⣤⠄⠀⠸⠷⠟⠀⠀⠁⠀⠀⠀`
 
 type Project struct {
-	ProjectName string
-	GitRepo     string
-	AbsolutPath string
+	ProjectName  string
+	GitRepo      string
+	AbsolutePath string
 }
 
 type Program struct {
@@ -81,8 +81,8 @@ func checkAWSInstall() error {
 }
 
 func (p *Project) Create(wg *sync.WaitGroup, git, server string) {
-	appDir := fmt.Sprintf("%s/%s", p.AbsolutPath, p.ProjectName)
-	if _, err := os.Stat(p.AbsolutPath); err == nil {
+	appDir := fmt.Sprintf("%s/%s", p.AbsolutePath, p.ProjectName)
+	if _, err := os.Stat(p.AbsolutePath); err == nil {
 		if err := os.Mkdir(appDir, 0755); err != nil {
 			cobra.CheckErr(err)
 		}

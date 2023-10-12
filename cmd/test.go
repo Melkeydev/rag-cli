@@ -80,7 +80,7 @@ var initCmd = &cobra.Command{
 			cobra.CheckErr(err)
 		}
 
-		project.AbsolutPath = currentWorkingDir
+		project.AbsolutePath = currentWorkingDir
 		project.ProjectName = options.AppName.Output
 
 		var initIOWg sync.WaitGroup
