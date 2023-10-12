@@ -109,51 +109,46 @@ func (p *Project) Create(wg *sync.WaitGroup, git, server string) {
 
 func (p *Project) InstallAWSCli(wg *sync.WaitGroup, system string) {
 
-	err := checkAWSInstall()
-	if err != nil {
-		// That the user has AWS CLI installed?
+	if system == "darwin" {
+		// Download the AWS CLI installer
+		if err := executeCmd("curl",
+			[]string{"https://awscli.amazonaws.com/AWSCLIV2.pkg", "-o", "AWSCLIV2.pkg"},
+			""); err != nil {
+			cobra.CheckErr(err)
+		}
+
+		// Install the AWS CLI
+		if err := executeCmd("sudo",
+			[]string{"installer", "-pkg", "AWSCLIV2.pkg", "-target", "/"},
+			""); err != nil {
+			cobra.CheckErr(err)
+		}
+
+	} else if system == "linux" {
+		if err := executeCmd("curl",
+			[]string{"https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip", "-o", "awscliv2.zip"},
+			""); err != nil {
+			fmt.Printf("%s\n", "Problem curling https://awscli.amazonaws.com")
+		}
+		if err := executeCmd("unzip",
+			[]string{"awscliv2.zip"},
+			""); err != nil {
+			fmt.Printf("%s\n", "Problem Running unzip command on awscliv2.zip")
+		}
+		if err := executeCmd("sudo",
+			[]string{"./aws/install"},
+			""); err != nil {
+			fmt.Printf("%s\n", "Found existing version of AWS CLI")
+		}
+
+		// Cleanup: delete awscliv2.zip and aws directory
+		if err := os.Remove("awscliv2.zip"); err != nil {
+			fmt.Println(err)
+		}
+		if err := os.RemoveAll("aws"); err != nil {
+			fmt.Println(err)
+		}
 	}
-
-	// if system == "darwin" {
-	// 	// Download the AWS CLI installer
-	// 	if err := executeCmd("curl",
-	// 		[]string{"https://awscli.amazonaws.com/AWSCLIV2.pkg", "-o", "AWSCLIV2.pkg"},
-	// 		""); err != nil {
-	// 		cobra.CheckErr(err)
-	// 	}
-
-	// 	// Install the AWS CLI
-	// 	if err := executeCmd("sudo",
-	// 		[]string{"installer", "-pkg", "AWSCLIV2.pkg", "-target", "/"},
-	// 		""); err != nil {
-	// 		cobra.CheckErr(err)
-	// 	}
-
-	// } else if system == "linux" {
-	// 	if err := executeCmd("curl",
-	// 		[]string{"https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip", "-o", "awscliv2.zip"},
-	// 		""); err != nil {
-	// 		fmt.Printf("%s\n", "Problem curling https://awscli.amazonaws.com")
-	// 	}
-	// 	if err := executeCmd("unzip",
-	// 		[]string{"awscliv2.zip"},
-	// 		""); err != nil {
-	// 		fmt.Printf("%s\n", "Problem Running unzip command on awscliv2.zip")
-	// 	}
-	// 	if err := executeCmd("sudo",
-	// 		[]string{"./aws/install"},
-	// 		""); err != nil {
-	// 		fmt.Printf("%s\n", "Found existing version of AWS CLI")
-	// 	}
-
-	// 	// Cleanup: delete awscliv2.zip and aws directory
-	// 	if err := os.Remove("awscliv2.zip"); err != nil {
-	// 		fmt.Println(err)
-	// 	}
-	// 	if err := os.RemoveAll("aws"); err != nil {
-	// 		fmt.Println(err)
-	// 	}
-	// }
 
 	wg.Done()
 }
