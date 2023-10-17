@@ -80,7 +80,7 @@ func checkAWSInstall() error {
 	return nil
 }
 
-func (p *Project) Create(wg *sync.WaitGroup, git, server string) {
+func (p *Project) Create(wg *sync.WaitGroup, server string) {
 	appDir := fmt.Sprintf("%s/%s", p.AbsolutePath, p.ProjectName)
 	if _, err := os.Stat(p.AbsolutePath); err == nil {
 		if err := os.Mkdir(appDir, 0755); err != nil {
@@ -89,18 +89,20 @@ func (p *Project) Create(wg *sync.WaitGroup, git, server string) {
 	}
 
 	// Determine what repo to pull
-	if git == "Yes" {
-		switch server {
-		case "AWS Lambda":
-			gitClone("https://github.com/Melkeydev/rag-stack-lambda.git", appDir)
-		case "AWS Fargate":
-			gitClone("https://github.com/Melkeydev/rag-stack-fargate.git", appDir)
-		default:
-			cobra.CheckErr("No Aws Deploy option selected")
-		}
+	switch server {
+	case "AWS Lambda":
+		gitClone("https://github.com/Melkeydev/rag-stack-lambda.git", appDir)
+	case "AWS Fargate":
+		gitClone("https://github.com/Melkeydev/rag-stack-fargate.git", appDir)
+	default:
+		cobra.CheckErr("No Aws Deploy option selected")
 	}
 
 	if err := os.RemoveAll(fmt.Sprintf("%s/.git", appDir)); err != nil {
+		cobra.CheckErr(err)
+	}
+
+	if err := executeCmd("git", []string{"init"}, appDir); err != nil {
 		cobra.CheckErr(err)
 	}
 

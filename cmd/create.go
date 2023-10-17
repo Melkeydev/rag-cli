@@ -28,7 +28,7 @@ var (
 
 var initCmd = &cobra.Command{
 	Use:   "init",
-	Short: "test",
+	Short: "Spin up a full stack project in seconds",
 	Long:  "RAG is a stack designed to get you developing full stack applications using React, AWS and Go",
 	Run: func(cmd *cobra.Command, args []string) {
 
@@ -95,7 +95,7 @@ var initCmd = &cobra.Command{
 
 			go func() {
 				defer initIOWg.Done()
-				project.Create(&initIOWg, options.Git, options.Server)
+				project.Create(&initIOWg, options.Server)
 			}()
 
 			tprogram = tea.NewProgram(loading.InitialAnimatedLoading())
@@ -108,7 +108,7 @@ var initCmd = &cobra.Command{
 
 		} else {
 			initIOWg.Add(1)
-			go project.Create(&initIOWg, options.Git, options.Server)
+			go project.Create(&initIOWg, options.Server)
 
 			tprogram = tea.NewProgram(loading.InitialAnimatedLoading())
 			if _, err := tprogram.Run(); err != nil {

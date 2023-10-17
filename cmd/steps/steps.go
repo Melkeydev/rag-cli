@@ -15,7 +15,6 @@ type Steps struct {
 
 type Options struct {
 	Server    string
-	Git       string
 	AppName   *textinput.Output
 	AWSPrompt string
 	AWS       string
@@ -35,12 +34,6 @@ func InitSteps(options *Options) *Steps {
 				Options:  []string{"Yes", "No thank you"},
 				Headers:  "Do you want RAG to install the AWS CLI on your machine?",
 				Field:    &options.AWS,
-			},
-			{
-				StepName: "Git",
-				Options:  []string{"Yes", "No thank you"},
-				Headers:  "Do you want to init a git project?",
-				Field:    &options.Git,
 			},
 			{
 				StepName: "Server",
